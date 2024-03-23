@@ -42,7 +42,7 @@ export function handleBlocks(blocks: Block[]): Bytes {
 
   for (let i = events.length - 1; i >= 0; i--) {
     if (events[i].esig == esig_sync) {
-      //   console.log('SYNC event');
+      console.log('SYNC event');
       lastSyncEvent = events[i];
       break;
     }
@@ -55,14 +55,14 @@ export function handleBlocks(blocks: Block[]): Bytes {
   } else {
     let price0 = calcPrice(lastSyncEvent);
 
-    // console.log("Current price is: " + (price0.toI64() / 10**price_decimals).toString() + "." + (price0.toI64() % 10**price_decimals).toString())
+    console.log("Current price is: " + (price0.toI64() / 10**price_decimals).toString() + "." + (price0.toI64() % 10**price_decimals).toString())
 
     // Only Trigger when price > pre-defined threshold
     let triggerCondition = price0.ge(
       BigInt.fromI32(threshold_eth_price * 10 ** price_decimals),
     );
     // ATTENTION: REMOVE THIS IF YOU WANT TO SEE THE OUTPUT
-    require(triggerCondition, "Trigger condition failed.");
+    //require(triggerCondition, "Trigger condition failed.");
 
     // Set payload to the current price0 when triggering destination contract.
     let payload = Bytes.fromHexString(price0.toString(16)).padStart(32, 0);
